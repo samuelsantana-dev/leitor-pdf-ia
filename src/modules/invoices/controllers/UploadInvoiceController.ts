@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { UploadInvoiceService } from "../services/UploadInvoiceService";
-
+import { UploadInvoiceService } from "../services/InvoiceService";
+const service = new UploadInvoiceService();
 export class UploadInvoiceController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const file = req.file;
-    if (!file) {
-      return res.status(400).json({ error: "Arquivo PDF não enviado" });
+    try {
+      const output = await service.execute(req.file?.buffer);
+
+      return res.json({
+        success: true,
+        data: output,
+      });
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message });
     }
-
-    
-    const uploadService = new UploadInvoiceService();
-    const result = await uploadService.execute(file);
-
-    return res.status(201).json(result);
   }
 }

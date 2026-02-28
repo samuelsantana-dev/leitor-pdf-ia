@@ -1,27 +1,29 @@
-import { ExtractedInvoiceDTO } from "../types/indext";
+import connectToGeminiToPdf from "@/shared/infra/llm/gemini.connection";
+import { IEnergyInvoice } from "../types/indext";
 
-export class InvoiceService {
-    static async calculate(data: ExtractedInvoiceDTO) {
-    const totalConsumptionKwh =
-      (data.electricEnergy?.kwh ?? 0) +
-      (data.sceeeEnergy?.kwh ?? 0);
+export class UploadInvoiceService {
+  async execute(fileBuffer: any): Promise<any> {
 
-    const totalAmountWithoutGD =
-      (data.electricEnergy?.amount ?? 0) +
-      (data.sceeeEnergy?.amount ?? 0) +
-      (data.publicLightingContribution?.amount ?? 0);
+    if (!fileBuffer) {
+      throw new Error("Nenhum arquivo enviado");
+    }
 
-    const gdSavingsAmount =
-      data.compensatedEnergy?.amount ?? 0;
+    if (!fileBuffer || fileBuffer.length === 0) {
+      throw new Error("O buffer do arquivo está vazio. Verifique a configuração do Multer.");
+    }
 
-    const compensatedEnergyKwh =
-      data.compensatedEnergy?.kwh ?? 0;
+    if (fileBuffer.length < 1000) {
+      throw new Error("O arquivo enviado é muito pequeno para ser um PDF válido. Verifique se selecionou o arquivo corretamente no Postman.");
+    }
 
-    return {
-      totalConsumptionKwh,
-      totalAmountWithoutGD,
-      gdSavingsAmount,
-      compensatedEnergyKwh,
-    };
+    if (!fileBuffer || fileBuffer.length === 0) {
+      throw new Error("Arquivo PDF vazio");
+    }
+
+      const base64Pdf = Buffer.from(fileBuffer).toString("base64");
+
+    const invoiceData = await connectToGeminiToPdf(base64Pdf);
+
+    return invoiceData;
   }
 }

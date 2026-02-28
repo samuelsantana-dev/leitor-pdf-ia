@@ -1,19 +1,13 @@
-export interface ExtractedInvoiceDTO {
-  clientNumber: string;
-  referenceMonth: string;
-  electricEnergy: {
-    kwh: number;
-    amount: number;
+export interface IEnergyInvoice {
+  num_cliente: string;
+  num_instalacao: string;
+  mes_referencia: string;
+  vencimento: string;
+  valor_total: number;
+  itens: {
+    energia_eletrica_kwh: number;
+    energia_compensada_kwh: number;
+    contrib_ilum_publica: number;
   };
-  sceeeEnergy: {
-    kwh: number;
-    amount: number;
-  };
-  compensatedEnergy: {
-    kwh: number;
-    amount: number;
-  };
-  publicLightingContribution: {
-    amount: number;
-  };
+  outputText?: string;
 }

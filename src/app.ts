@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { invoicesRoutes } from "./modules/invoices/routes";
+import "dotenv/config";
 
 const app = express();
 

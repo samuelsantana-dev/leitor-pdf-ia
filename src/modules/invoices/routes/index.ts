@@ -4,5 +4,6 @@ import multer from "multer";
 
 export const invoicesRoutes = Router();
 
-const upload = multer({ dest: 'uploads/' });
-invoicesRoutes.post("/upload", upload.any(), new UploadInvoiceController().handle);
+const upload = multer({ storage: multer.memoryStorage() });
+
+invoicesRoutes.post("/upload", upload.single('file'), new UploadInvoiceController().handle);
