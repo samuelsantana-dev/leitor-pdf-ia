@@ -1,7 +1,7 @@
 import { app } from "./app";
 import { AppDataSource } from "./shared/infra/database/data-source";
 import dotenv from "dotenv";
-
+import "dotenv/config";
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;

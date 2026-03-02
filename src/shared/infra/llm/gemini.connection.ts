@@ -15,19 +15,40 @@ export default async function connectToGeminiToPdf(
           role: "user",
           parts: [
             {
-              text: `Analise esta fatura de energia CEMIG e extraia os dados em um JSON estrito com este formato:
-              {
-                "num_cliente": "string",
-                "num_instalacao": "string",
-                "mes_referencia": "string",
-                "vencimento": "string",
-                "valor_total": number,
-                "itens": {
-                  "energia_eletrica_kwh": number,
-                  "energia_compensada_kwh": number,
-                  "contrib_ilum_publica": number
-                }
-              `,
+             text: `
+                Analise cuidadosamente a fatura de energia elétrica da CEMIG presente neste documento.
+
+                Extraia as seguintes informações e apresente os dados em TEXTO SIMPLES e ORGANIZADO,
+                sem retornar JSON e sem usar markdown.
+
+                Retorne exatamente neste formato textual:
+
+                Numero do Cliente: <valor>
+
+                Mes de Referencia: <valor>
+
+                Energia Eletrica:
+                - Quantidade (kWh): <valor>
+                - Valor (R$): <valor>
+
+                Energia SCEEE s/ ICMS:
+                - Quantidade (kWh): <valor>
+                - Valor (R$): <valor>
+
+                Energia Compensada GD I:
+                - Quantidade (kWh): <valor>
+                - Valor (R$): <valor>
+
+                Contrib Ilum Publica Municipal:
+                - Valor (R$): <valor>
+
+                REGRAS:
+                - Extraia apenas valores presentes na fatura.
+                - Não invente dados.
+                - Caso algum campo não exista, retornar 0.
+                - Não adicionar explicações.
+                - Não retornar JSON.
+                `
             },
             {
               inlineData: {

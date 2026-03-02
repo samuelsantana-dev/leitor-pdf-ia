@@ -1,45 +1,61 @@
-import "reflect-metadata";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  JoinColumn,
+  Index
+} from "typeorm";
+import { Customer } from "./Customer";
 
 @Entity("invoices")
+@Index(["referenceMonth"])
 export class Invoice {
+
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @Column({ type: "varchar" })
-  clientNumber!: string;
+  @ManyToOne(() => Customer, c => c.invoices)
+  @JoinColumn()
+  customer!: Customer;
 
-  @Column({ type: "varchar" })
+  @Column()
   referenceMonth!: string;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  // Energia elétrica
+  @Column("decimal", { precision: 10, scale: 2 })
   electricEnergyKwh!: number;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  @Column("decimal", { precision: 10, scale: 2 })
   electricEnergyAmount!: number;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  // SCEEE
+  @Column("decimal", { precision: 10, scale: 2 })
   sceeeEnergyKwh!: number;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  @Column("decimal", { precision: 10, scale: 2 })
   sceeeEnergyAmount!: number;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  // GD
+  @Column("decimal", { precision: 10, scale: 2 })
   compensatedEnergyKwh!: number;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  @Column("decimal", { precision: 10, scale: 2 })
   compensatedEnergyAmount!: number;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  // CIP
+  @Column("decimal", { precision: 10, scale: 2 })
   publicLightingContribution!: number;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  // Calculados
+  @Column("decimal", { precision: 10, scale: 2 })
   totalConsumptionKwh!: number;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  @Column("decimal", { precision: 10, scale: 2 })
   totalAmountWithoutGD!: number;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  @Column("decimal", { precision: 10, scale: 2 })
   gdSavingsAmount!: number;
 
   @CreateDateColumn()
